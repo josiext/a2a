@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from src.model import get_model_response
 from src.agent import get_agent_response
+from src.a2a import get_a2a_response
 
 app = FastAPI()
 
@@ -24,3 +25,8 @@ def get_response(request: PromptRequest):
 def agent_endpoint(request: PromptRequest):
     response = get_agent_response(request.prompt)
     return {"agent": str(response)}
+
+@app.post("/a2a")
+def a2a_endpoint(request: PromptRequest):
+    response = get_a2a_response(request.prompt)
+    return {"a2a": str(response)}
