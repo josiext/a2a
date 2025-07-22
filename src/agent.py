@@ -5,6 +5,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage, SystemMessage
 
+
 memory = MemorySaver()
 model = init_chat_model("gemini-2.5-flash-lite-preview-06-17", model_provider="google_genai")
 search = TavilySearch(max_results=2)
