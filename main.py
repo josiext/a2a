@@ -1,11 +1,16 @@
 from dotenv import load_dotenv
+
 load_dotenv()
 
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from src.model import get_model_response
 from src.agent import get_agent_response
 from src.a2a import get_a2a_response
+
+if not os.environ.get("GOOGLE_API_KEY"):
+    raise ValueError("GOOGLE_API_KEY not found in environment variables. Please check your .env file.")
 
 app = FastAPI()
 

@@ -1,8 +1,4 @@
-import os
 from langchain_core.messages import HumanMessage, SystemMessage
-
-if not os.environ.get("GOOGLE_API_KEY"):
-    raise ValueError("GOOGLE_API_KEY not found in environment variables. Please check your .env file.")
 
 from langchain.chat_models import init_chat_model
 
