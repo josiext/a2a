@@ -11,6 +11,7 @@ from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_core.messages import HumanMessage, SystemMessage
+from src.utils import MODEL_NAME, MODEL_PROVIDER, SYSTEM_PROMPT
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -20,7 +21,7 @@ graph_builder = StateGraph(State)
 tool = TavilySearch(max_results=2)
 tools = [tool]
 
-llm = init_chat_model("gemini-2.5-flash-lite-preview-06-17", model_provider="google_genai")
+llm = init_chat_model(MODEL_NAME, model_provider=MODEL_PROVIDER)
 llm_with_tools = llm.bind_tools(tools)
 
 def chatbot(state: State):
@@ -43,7 +44,7 @@ graph = graph_builder.compile(checkpointer=memory)
 def get_a2a_response(prompt: str, thread_id: str = None):
     config = {"configurable": {"thread_id": thread_id}}
     messages = [
-        SystemMessage(content="Eres un modelo de IA que responde preguntas de manera clara y concisa. Tu nombre es Jarvis."),
+        SystemMessage(content=SYSTEM_PROMPT),
         HumanMessage(content=prompt)
     ]
 

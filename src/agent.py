@@ -3,27 +3,28 @@ from langchain_tavily import TavilySearch
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage, SystemMessage
+from src.utils import MODEL_NAME, MODEL_PROVIDER, SYSTEM_PROMPT
 
 memory = MemorySaver()
-model = init_chat_model("gemini-2.5-flash-lite-preview-06-17", model_provider="google_genai")
+model = init_chat_model(MODEL_NAME, model_provider=MODEL_PROVIDER)
 search = TavilySearch(max_results=2)
 tools = [search]
 agent_executor = create_react_agent(model, tools, checkpointer=memory)
 
-def get_agent_response(prompt: str):
-  config = {"configurable": {"thread_id": None}}
+def get_agent_response(prompt: str, thread_id: str = None):
+  config = {"configurable": {"thread_id": thread_id}}
   messages = [
-        SystemMessage(content="Eres un modelo de IA que responde preguntas de manera clara y concisa. Tu nombre es Jarvis."),
+        SystemMessage(content=SYSTEM_PROMPT),
         HumanMessage(content=prompt)
     ]
   
   response = agent_executor.invoke({"messages": messages}, config)
   return response["messages"][-1].content
 
-def get_agent_response_stream(prompt: str):
-    config = {"configurable": {"thread_id": None}}
+def get_agent_response_stream(prompt: str, thread_id: str = None):
+    config = {"configurable": {"thread_id": thread_id}}
     messages = [
-        SystemMessage(content="Eres un modelo de IA que responde preguntas de manera clara y concisa. Tu nombre es Jarvis."),
+        SystemMessage(content=SYSTEM_PROMPT),
         HumanMessage(content=prompt)
       ]
     

@@ -1,15 +1,15 @@
 from langchain_core.messages import HumanMessage, SystemMessage
-
+from src.utils import SYSTEM_PROMPT, MODEL_NAME, MODEL_PROVIDER
 from langchain.chat_models import init_chat_model
 
-model = init_chat_model("gemini-2.5-flash-lite-preview-06-17", model_provider="google_genai")
+model = init_chat_model(MODEL_NAME, model_provider=MODEL_PROVIDER)
 
-def get_model_response(prompt: str):
+def get_model_response(prompt: str, thread_id: str = None):
+    config = {"configurable": {"thread_id": thread_id}}
     messages = [
-        SystemMessage(content="Eres un modelo de IA que responde preguntas de manera clara y concisa. Tu nombre es Jarvis."),
+        SystemMessage(content=SYSTEM_PROMPT),
         HumanMessage(content=prompt)
     ]
 
-    print(messages)
-    response = model.invoke(messages)
+    response = model.invoke(messages, config)
     return str(response)
