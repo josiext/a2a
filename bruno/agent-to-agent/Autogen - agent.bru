@@ -1,0 +1,17 @@
+meta {
+  name: Autogen - agent
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://127.0.0.1:8000/autogen/agent
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "prompt": "Find information on AutoGen"
+  }
+}
