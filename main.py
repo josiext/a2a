@@ -10,6 +10,7 @@ from src.agent import get_agent_response
 from src.a2a import get_a2a_response
 from src.autogen.model import get_autogen_model_response 
 from src.autogen.agent import get_autogen_agent_response
+from src.autogen.a2a import get_autogen_a2a_response
 
 if not os.environ.get("GOOGLE_API_KEY"):
     raise ValueError("GOOGLE_API_KEY not found in environment variables. Please check your .env file.")
@@ -51,4 +52,9 @@ async def autogen_model_endpoint(request: PromptRequest):
 @app.post("/autogen/agent")
 async def autogen_agent_endpoint(request: PromptRequest):
     response = await get_autogen_agent_response(request.prompt)
+    return {"autogen": str(response)}
+
+@app.post("/autogen/a2a")
+async def autogen_a2a_endpoint(request: PromptRequest):
+    response = await get_autogen_a2a_response(request.prompt)
     return {"autogen": str(response)}
