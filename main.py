@@ -5,9 +5,9 @@ load_dotenv()
 import os
 from fastapi import FastAPI
 from pydantic import BaseModel
-from src.model import get_model_response
-from src.agent import get_agent_response
-from src.a2a import get_a2a_response
+from src.langchain.model import get_model_response
+from src.langchain.agent import get_agent_response
+from src.langchain.a2a import get_a2a_response
 from src.autogen.model import get_autogen_model_response 
 from src.autogen.agent import get_autogen_agent_response
 from src.autogen.a2a import get_autogen_a2a_response
@@ -27,17 +27,17 @@ class PromptRequest(BaseModel):
 def read_root():
     return {"docs": "/docs"}
 
-@app.post("/model")
+@app.post("/langchain/model")
 def get_response(request: PromptRequest):
     response = get_model_response(request.prompt)
     return {"model": str(response)}
 
-@app.post("/agent")
+@app.post("/langchain/agent")
 def agent_endpoint(request: PromptRequest):
     response = get_agent_response(request.prompt)
     return {"agent": str(response)}
 
-@app.post("/a2a")
+@app.post("/langchain/a2a")
 def a2a_endpoint(request: PromptRequest):
     response = get_a2a_response(request.prompt)
     return {"a2a": str(response)}
