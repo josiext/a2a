@@ -15,6 +15,7 @@ model_client = OpenAIChatCompletionClient(
     model_info=ModelInfo(vision=True, function_calling=True, json_output=True, family="unknown", structured_output=True),
     api_key=os.environ.get("GOOGLE_API_KEY"),
 )
+
 agent = AssistantAgent(
     name="assistant",
     model_client=model_client,
