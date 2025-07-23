@@ -8,14 +8,18 @@ from pydantic import BaseModel
 from src.model import get_model_response
 from src.agent import get_agent_response
 from src.a2a import get_a2a_response
+from src.autogen.model import get_autogen_model_response 
 
 if not os.environ.get("GOOGLE_API_KEY"):
     raise ValueError("GOOGLE_API_KEY not found in environment variables. Please check your .env file.")
 
 app = FastAPI()
 
+
 class PromptRequest(BaseModel):
     prompt: str
+
+# LANGCHAIN
 
 @app.get("/")
 def read_root():
@@ -35,3 +39,10 @@ def agent_endpoint(request: PromptRequest):
 def a2a_endpoint(request: PromptRequest):
     response = get_a2a_response(request.prompt)
     return {"a2a": str(response)}
+
+# AUTOGEN
+
+@app.post("/autogen/model")
+async def autogen_model_endpoint(request: PromptRequest):
+    response = await get_autogen_model_response(request.prompt)
+    return {"autogen": str(response)}
