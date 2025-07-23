@@ -17,7 +17,6 @@ if not os.environ.get("GOOGLE_API_KEY"):
 
 app = FastAPI()
 
-
 class PromptRequest(BaseModel):
     prompt: str
 
